@@ -15,16 +15,19 @@ function getDate(){
 }
 
 app.get('/', (req, res) => {
-    // console.log("ktoto zashel na stranicu")
     res.render('index')
 })
 
-app.get('/date', (req, res) => {
+app.get('/date/', (req, res) => {
     res.render('date')
     getDate()
 })
 
-app.get("/posts", (req, res) =>{
+app.get('/user/', (req, res) => {
+    res.render("user")
+})
+
+app.get("/posts/", (req, res) =>{
     context = {
         posts:[
             {
@@ -50,3 +53,5 @@ app.get("/posts", (req, res) =>{
 app.listen(PORT, HOST, () =>{
     console.log("http://localhost:8000")
 })
+
+
