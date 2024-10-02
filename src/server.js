@@ -14,6 +14,25 @@ function getDate(){
     console.log(moment().format("YYYY/MM/DD hh:mm:ss"))
 }
 
+
+const posts = [
+    {
+        name: 'NodeJS is so cool!',
+        author: 'Serjik',
+        text: "Lorem ipsum abv yay cool wow Lorem ipsum abv yay cool wow"
+    },
+    {
+        name: 'How to center a div?',
+        author: 'Tosha',
+        text: 'Lorem ipsum abv yay cool wow Lorem ipsum abv yay cool wow Lorem ipsum abv yay cool wow'
+    },
+    {
+        name: 'What color of nail polish is in trend today?',
+        author: "Kamilla",
+        text: 'Lorem ipsum abv yay cool wow'
+    }
+]
+
 app.get('/', (req, res) => {
     res.render('index')
 })
@@ -28,26 +47,23 @@ app.get('/user/', (req, res) => {
 })
 
 app.get("/posts/", (req, res) =>{
-    context = {
-        posts:[
-            {
-                name: 'NodeJS is so cool!',
-                author: 'Serjik',
-                text: "Lorem ipsum abv yay cool wow Lorem ipsum abv yay cool wow"
-            },
-            {
-                name: 'How to center a div?',
-                author: 'Tosha',
-                text: 'Lorem ipsum abv yay cool wow Lorem ipsum abv yay cool wow Lorem ipsum abv yay cool wow'
-            },
-            {
-                name: 'What color of nail polish is in trend today?',
-                author: "Kamilla",
-                text: 'Lorem ipsum abv yay cool wow'
-            }
-        ]
+    const context = {
+        posts: posts
     }
     res.render('posts', context)
+})
+
+app.get("/post/:id/", (req, res) =>{
+    const id = req.params.id
+    const context = {
+        post: posts[id-1],
+        id: id
+    }
+    if (id <= posts.length && id > 0){
+        res.render('post', context)
+    } else{
+        res.render("incorrect_post")
+    }
 })
 
 app.listen(PORT, HOST, () =>{

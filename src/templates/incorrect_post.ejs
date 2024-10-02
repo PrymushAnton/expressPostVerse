@@ -3,34 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Posts page</title>
+    <title>Incorrect post</title>
     <link rel="stylesheet" href="/static/style.css">
-    <script defer src="/static/script.js"></script>
 </head>
 <body>
     <header>
-        <h1>Posts page</h1>
+        <h1>Incorrect post page</h1>
         <div class="header_nav">
             <a href="/">Home page</a>
             <a href="/date/">Date page</a>
             <a href="/posts/">Posts page</a>
             <a href="/user/">User page</a>
         </div>
-        
     </header>
 
     <main>
-        <% posts.forEach((post, index) => { %>
-            <div class="post">
-                <h2><a href="/post/<%= index+1 %>"><%= post.name %></a></h2>
-                <h4><%= post.author %></h4>
-            </div>
-        <% }) %>
-
+        <h1>There is no post with your id!</h1>
     </main>
 
     <footer>
-        <p>This is posts page.</p>
+        <p>This is incorrect post</p>
     </footer>
+    
 </body>
 </html>
