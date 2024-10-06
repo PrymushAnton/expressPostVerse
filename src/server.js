@@ -9,6 +9,7 @@ const HOST = 'localhost'
 app.set("view engine", "ejs")
 app.set("views", path.join(__dirname, 'templates'))
 app.use('/static/', express.static(path.join(__dirname, 'static')))
+app.use(express.json())
 
 function getDate(){
     console.log(moment().format("YYYY/MM/DD hh:mm:ss"))
@@ -66,8 +67,18 @@ app.get("/post/:id/", (req, res) =>{
     }
 })
 
+
+
+app.post('/post/create/', (req, res) => {
+    const data = req.body
+    // console.log(data)
+    posts.push(data)
+    res.send('Your post was succesfully published.')
+})
+
 app.listen(PORT, HOST, () =>{
     console.log("http://localhost:8000")
 })
+
 
 
