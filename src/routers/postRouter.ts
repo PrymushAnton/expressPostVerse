@@ -3,14 +3,19 @@
 // Роутери, контроллери, сервіси потрібні для того, щоб зменшити кількість коду у файлі з сервером,
 // та розбити цей код на окремі блоки для легшої роботи розробника з цим кодом.
 
-const express = require('express')
-const router = express.Router()
-const postController = require('../controllers/postController')
+import { Router } from 'express'
+import { getAllPosts, getPostById, createPost } from '../controllers/postController'
 
-router.get("/all", postController.getAllPosts)
 
-router.get("/:id", postController.getPostById)
 
-router.post('/create', postController.createPost)
+// const express_app: Express = require('express')
+const router = Router()
+// const postController = require('../controllers/postController')
 
-module.exports = router
+router.get("/all", getAllPosts)
+
+router.get("/:id", getPostById)
+
+router.post('/create', createPost)
+
+export { router }

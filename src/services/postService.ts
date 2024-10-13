@@ -27,7 +27,7 @@ function getAllPosts(){
     return context
 }
 
-function getPostById(id){
+function getPostById(id: number){
     const context = {
         post: posts[id-1]
     }
@@ -38,12 +38,8 @@ function getPostById(id){
     }
 }
 
-function createPost(data){
+function createPost(data:{name: string, author: string, text: string}){
     posts.push(data)
 }
 
-module.exports = {
-    getAllPosts: getAllPosts,
-    getPostById: getPostById,
-    createPost: createPost
-}
+export { getAllPosts, getPostById, createPost }
