@@ -4,7 +4,7 @@
 // та розбити цей код на окремі блоки для легшої роботи розробника з цим кодом.
 
 import { Router } from 'express'
-import { getAllPosts, getPostById, createPost } from '../controllers/postController'
+import { getAllPosts, getPostById, createPost } from './postController'
 
 
 

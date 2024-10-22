@@ -22,7 +22,7 @@
     <main>
         <% posts.forEach((post, index) => { %>
             <div class="post">
-                <h2><a href="/post/<%= index+1 %>"><%= post.name %></a></h2>
+                <h2><a href="/post/<%= post.id %>"><%= post.name %></a></h2>
                 <h4><%= post.author %></h4>
             </div>
         <% }) %>

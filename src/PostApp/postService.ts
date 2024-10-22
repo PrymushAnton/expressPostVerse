@@ -1,4 +1,6 @@
 // Сервіси - це функції, які виконують основну логіку функцій відображення
+import { Prisma } from '@prisma/client'
+import postRepository from "./postRepository"
 
 const posts = [
     {
@@ -19,27 +21,25 @@ const posts = [
 ]
 
 
-
-function getAllPosts(){
+async function getAllPosts(){
     const context = {
-        posts: posts
+        posts: await postRepository.getAllPosts()
     }
     return context
 }
 
-function getPostById(id: number){
+async function getPostById(id: number){
     const context = {
-        post: posts[id-1]
+        post: await postRepository.getPostById(id)
     }
-    
+
     return {
-        context: context,
-        length: posts.length
+        context: context
     }
 }
 
-function createPost(data:{name: string, author: string, text: string}){
-    posts.push(data)
+async function createPost(data:Prisma.PostCreateInput){
+    await postRepository.createOnePost(data)
 }
 
 export { getAllPosts, getPostById, createPost }

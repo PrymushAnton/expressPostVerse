@@ -12,8 +12,7 @@ create_post_button.addEventListener("click", ()=>{
             name: "Django framework: cons and pros",
             author: "Mykolay",
             text: "Django framework is lorem ipsum lorem ipsum!"
-        })
-        ,
+        }),
         headers: {
             "Content-Type": 'application/json'
         }

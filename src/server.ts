@@ -7,7 +7,7 @@
 import express, { Express, Request, Response } from 'express'
 import { join } from 'path'
 import moment from 'moment'
-import { router } from './routers/postRouter'
+import { router } from './PostApp/postRouter'
 
 
 const app: Express = express()
