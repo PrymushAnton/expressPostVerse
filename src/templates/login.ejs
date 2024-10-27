@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/login.css">
+    <script defer src="../static/login.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Login page</h1>
+        <div class="header_nav">
+            <a href="/">Home page</a>
+            <a href="/date/">Date page</a>
+            <a href="/post/all">Posts page</a>
+            <a href="/user/">User page</a>
+            <a href="/login/">Login page</a>
+            <a href="/registration/">Registration page</a>
+        </div>
+    </header>
+
+
+    <main>
+        <form method="POST" id="formUser">
+            <h2>Login</h2>
+            <input type="text" id="emailInput" placeholder="Enter email">
+            <input type="password" id="passwordInput" placeholder="Enter password">
+            <button type="submit" id="submitButton">Send</button>
+            <span>Don't have an account? <a href="/registration/">Register</a></span>
+        </form>
+    </main>
+    
+
+    <footer>
+        <p>This is a login page.</p>
+    </footer>
+</body>
+</html>

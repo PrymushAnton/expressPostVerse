@@ -26,96 +26,96 @@ async function getAllPosts(){
 
 
 
-async function createManyPosts(){
-    try{
-        const posts = await client.post.createMany({
-            data: [
-                {
-                    name: "Posttt",
-                    author: "Somebody",
-                    text: "Somebodys post"
-                },
-                {
-                    name: "PPPost",
-                    author: "Bodysome",
-                    text: "Bodysomes post"
-                }
-            ]
-        })
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
-        }
-    }
+// async function createManyPosts(){
+//     try{
+//         const posts = await client.post.createMany({
+//             data: [
+//                 {
+//                     name: "Posttt",
+//                     author: "Somebody",
+//                     text: "Somebodys post"
+//                 },
+//                 {
+//                     name: "PPPost",
+//                     author: "Bodysome",
+//                     text: "Bodysomes post"
+//                 }
+//             ]
+//         })
+//     } catch(err){
+//         if (err instanceof PrismaClientKnownRequestError){
+//             if (err.code == 'P2002'){
+//                 console.log(err.message)
+//                 throw err
+//             } else if (err.code == 'P2015'){
+//                 console.log(err.message)
+//                 throw err
+//             } else if (err.code == 'P2019'){
+//                 console.log(err.message)
+//                 throw err
+//             } 
+//         }
+//     }
     
-}
+// }
 
 
-async function createOneComment(id:number){
-    try{
-        const comment = await client.comment.create({
-            data: {
-                title: "Working at a factory is better!",
-                text: "Lorem ipsum dolor sit amet, consectetur adipiscing",
-                postId: id
-            }
-        })
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
-        }
-    }
-}
+// async function createOneComment(id:number){
+//     try{
+//         const comment = await client.comment.create({
+//             data: {
+//                 title: "Working at a factory is better!",
+//                 text: "Lorem ipsum dolor sit amet, consectetur adipiscing",
+//                 postId: id
+//             }
+//         })
+//     } catch(err){
+//         if (err instanceof PrismaClientKnownRequestError){
+//             if (err.code == 'P2002'){
+//                 console.log(err.message)
+//                 throw err
+//             } else if (err.code == 'P2015'){
+//                 console.log(err.message)
+//                 throw err
+//             } else if (err.code == 'P2019'){
+//                 console.log(err.message)
+//                 throw err
+//             } 
+//         }
+//     }
+// }
 
-async function createManyComments(id:number){
-    try{
-        const comment = await client.comment.createMany({
-            data: [
-                {
-                    title: "You have an error in code!",
-                    text: "Lorem ipsum dolor sit amet, consectetur adipiscing",
-                    postId: id
-                },
-                {
-                    title: "Your tutorials is the best!",
-                    text: "Lorem ipsum dolor sit amet, consectetur adipiscing",
-                    postId: id
-                }
-            ]
-        })
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
-        }
-    }
-}
+// async function createManyComments(id:number){
+//     try{
+//         const comment = await client.comment.createMany({
+//             data: [
+//                 {
+//                     title: "You have an error in code!",
+//                     text: "Lorem ipsum dolor sit amet, consectetur adipiscing",
+//                     postId: id
+//                 },
+//                 {
+//                     title: "Your tutorials is the best!",
+//                     text: "Lorem ipsum dolor sit amet, consectetur adipiscing",
+//                     postId: id
+//                 }
+//             ]
+//         })
+//     } catch(err){
+//         if (err instanceof PrismaClientKnownRequestError){
+//             if (err.code == 'P2002'){
+//                 console.log(err.message)
+//                 throw err
+//             } else if (err.code == 'P2015'){
+//                 console.log(err.message)
+//                 throw err
+//             } else if (err.code == 'P2019'){
+//                 console.log(err.message)
+//                 throw err
+//             } 
+//         }
+//     }
+// }
 
 
 async function deleteComment(id:number){
