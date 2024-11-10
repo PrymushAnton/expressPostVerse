@@ -1,5 +1,7 @@
 import { Request, Response } from 'express'
 import userService from './userService'
+import { SECRET_KEY } from '../config/token'
+import { sign } from 'jsonwebtoken'
 
 
 function renderLoginPage(req: Request, res: Response){
@@ -7,13 +9,15 @@ function renderLoginPage(req: Request, res: Response){
 }
 
 async function loginUser(req: Request, res: Response){
-    console.log(req.body)
+    // console.log(req.body)
     const data = req.body
     const user: any = await userService.findUserByEmail(data.email, data.password)
     if (user instanceof String){
         res.sendStatus(401)
     } else {
-        res.cookie('user', JSON.stringify(user))
+        const token = sign(user, SECRET_KEY, {expiresIn:'1h'})
+        // res.cookie('user', JSON.stringify(user))
+        res.cookie('token', token)
         res.sendStatus(200)
     }
 }
@@ -24,14 +28,16 @@ function renderRegistrationPage(req: Request, res: Response){
 }
 
 async function authRegistration(req: Request, res: Response){
-    console.log("Contoller", req.body)
+    // console.log("Contoller", req.body)
 
     const data = req.body
     const user: any = await userService.createUser(data)
     if (user instanceof String){
         res.sendStatus(401)
     } else {
-        res.cookie('user', JSON.stringify(user))
+        const token = sign(user, SECRET_KEY, {expiresIn:'1h'})
+        // res.cookie('user', JSON.stringify(user))
+        res.cookie('token', token)
         res.sendStatus(200)
     }
 
