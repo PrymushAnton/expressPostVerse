@@ -4,11 +4,11 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import * as bcrypt from 'bcrypt';
 
 
-const HashPassword = async (password: string): Promise<string> => {
-    const salt = await bcrypt.genSalt();
-    const hash = await bcrypt.hash(password, salt);
-    return hash;
-}
+// const HashPassword = async (password: string): Promise<string> => {
+//     const salt = await bcrypt.genSalt();
+//     const hash = await bcrypt.hash(password, salt);
+//     return hash;
+// }
 
 
 
@@ -20,11 +20,8 @@ async function findUserByEmail(email:string){
                 email: email
             }
         })
-        if (user === null || user === undefined){
-            return "Not found"
-        } else {
-            return user
-        }
+        return user
+        
         
     } catch(err){
         if (err instanceof PrismaClientKnownRequestError){
@@ -45,12 +42,11 @@ async function findUserByEmail(email:string){
 
 async function createUser(data: Prisma.UserCreateInput){
     try{
-        console.log(typeof(data.password))
         const user = await client.user.create({
             data: {
                 username: data.username,
                 email: data.email,
-                password: await HashPassword(data.password),
+                password: data.password,
                 role: data.role
             }
         })

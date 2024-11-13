@@ -2,59 +2,54 @@ import { Prisma } from '@prisma/client'
 import userRepository from "./userRepository"
 import * as bcrypt from 'bcrypt';
 
-
-const ComparePassword = async (hash: string, password: string): Promise<boolean> => {
-    const isMatch = await bcrypt.compare(password, hash);
-    return isMatch;
+interface ISuccess{
+    status: 'success',
+    data: IUser
 }
 
-async function findUserByEmail(email: string, password: string){
-    const user: any = await userRepository.findUserByEmail(email=email)
-    if (user instanceof String){
-        return user
+interface IError{
+    status: 'error',
+    message: string
+}
+
+interface IUser{
+    id: number,
+    username: string,
+    email: string,
+    password: string,
+    role: string
+}
+
+// const ComparePassword = async (hash: string, password: string): Promise<boolean> => {
+//     const isMatch = await bcrypt.compare(password, hash);
+//     return isMatch;
+// }
+
+async function loginUser(email: string, password: string): Promise< IError | ISuccess > {
+    const user = await userRepository.findUserByEmail(email=email)
+    if (user == null || user == undefined){
+        return {status: "error", message: "User does not exist"}
     } else {
-        // if (password == user.password){
-        //     const new_user = {
-        //         username: user.username,
-        //         email: user.email,
-        //         role: user.role
-        //     }
-        //     return new_user
-        // }
-        const result = await ComparePassword(user.password, password)
-        if (result){
-            const new_user = {
-                username: user.username,
-                email: user.email,
-                role: user.role
-            }
-            return new_user
+        if (password == user.password){
+            return {status: 'success', data: user}
         }
+        return {status: "error", message: "password does not match"}
     }
 }
 
-async function createUser(data: {username:string, email:string, password:string}){
-    const user: any = await userRepository.findUserByEmail(data.email)
-
-    if (user == "Not found"){
+async function createUser(data: {username:string, email:string, password:string}): Promise< IError | ISuccess > {
+    const user = await userRepository.findUserByEmail(data.email)
+    if (user == null || user == undefined){
         const full_data = {...data, role:"user"}
         const created_user: any = await userRepository.createUser(full_data)
-        const data_return = {
-            username: created_user.username,
-            email: created_user.email,
-            role: created_user.role
-        }
-        
-        return data_return
-
+        return {status: 'success', data: created_user}
     } else {
-        return "User exists"
+        return {status: 'error', message: "User exists"}
     }
-    
 }
 
 const userService = {
-    findUserByEmail: findUserByEmail,
+    loginUser: loginUser,
     createUser: createUser
 }
 
