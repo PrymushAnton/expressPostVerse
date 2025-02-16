@@ -2,17 +2,17 @@ import { Prisma } from '@prisma/client'
 import userRepository from "./userRepository"
 import * as bcrypt from 'bcrypt';
 
-interface ISuccess{
+export interface ISuccess{
     status: 'success',
     data: IUser
 }
 
-interface IError{
+export interface IError{
     status: 'error',
     message: string
 }
 
-interface IUser{
+export interface IUser{
     id: number,
     username: string,
     email: string,
@@ -31,6 +31,8 @@ async function loginUser(email: string, password: string): Promise< IError | ISu
         return {status: "error", message: "User does not exist"}
     } else {
         if (password == user.password){
+            console.log("Welcome")
+
             return {status: 'success', data: user}
         }
         return {status: "error", message: "password does not match"}
@@ -40,7 +42,7 @@ async function loginUser(email: string, password: string): Promise< IError | ISu
 async function createUser(data: {username:string, email:string, password:string}): Promise< IError | ISuccess > {
     const user = await userRepository.findUserByEmail(data.email)
     if (user == null || user == undefined){
-        const full_data = {...data, role:"user"}
+        const full_data = {...data, role:"admin"}
         const created_user: any = await userRepository.createUser(full_data)
         return {status: 'success', data: created_user}
     } else {

@@ -11,7 +11,7 @@ export function authMiddleware(req: Request, res: Response, next: NextFunction){
         // if (cookies.user.email && cookies.user.username && cookies.user.role){
         const token = verify(cookies.token, SECRET_KEY);
         res.locals.user = token
-        console.log("user authenticated ")
+
         next()
         // }
     } else {

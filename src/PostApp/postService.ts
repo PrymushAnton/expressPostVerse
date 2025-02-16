@@ -42,4 +42,8 @@ async function createPost(data:Prisma.PostCreateInput){
     await postRepository.createOnePost(data)
 }
 
-export { getAllPosts, getPostById, createPost }
+async function deletePost(id: number){
+    await postRepository.deletePost(id)
+}
+
+export { getAllPosts, getPostById, createPost, deletePost }

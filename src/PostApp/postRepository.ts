@@ -1,6 +1,6 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import client from '../client/prismaClient'
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { PrismaClientKnownRequestError, PrismaClientUnknownRequestError } from "@prisma/client/runtime/library";
 
 async function getAllPosts(){
     try{
@@ -324,11 +324,14 @@ async function findManyPosts(author:string){
 
 async function deletePost(id: number){
     try{
+        console.log(id)
         const post = await client.post.delete({
             where: {
                 id: id
             }
         })
+        console.log(post)
+
     } catch(err){
         if (err instanceof PrismaClientKnownRequestError){
             if (err.code == 'P2002'){
@@ -370,31 +373,49 @@ async function getPostById(id:number){
     }
 }
 
-async function createOnePost(data:Prisma.PostCreateInput){
+interface IData{
+    name: string,
+    author: string,
+    text: string
+}
+async function createOnePost(data:IData){
     try{
+        console.log(data)
         const post = await client.post.create({
-            data: data
+            data: {
+                ...data,
+                userId: 1
+            }
         })
+        console.log(post)
     } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
+        console.log("Error")
+
+        if (err instanceof PrismaClientUnknownRequestError){
+            console.log(err.message)
+
+            // if (err.code == 'P2002'){
+            //     console.log(err.message)
+            //     throw err
+            // } else if (err.code == 'P2015'){
+            //     console.log(err.message)
+            //     throw err
+            // } else if (err.code == 'P2019'){
+            //     console.log(err.message)
+            //     throw err
+            // } 
         }
     }
     
 }
 
+
+
+
 const postRepository = {
     getAllPosts:getAllPosts,
     getPostById:getPostById,
-    createOnePost:createOnePost
+    createOnePost:createOnePost,
+    deletePost: deletePost
 }
 export default postRepository

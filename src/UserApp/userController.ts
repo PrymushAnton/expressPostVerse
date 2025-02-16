@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import userService from './userService'
+import userService, {IError, ISuccess} from './userService'
 import { SECRET_KEY } from '../config/token'
 import { sign } from 'jsonwebtoken'
 
@@ -11,10 +11,15 @@ function renderLoginPage(req: Request, res: Response){
 async function loginUser(req: Request, res: Response){
     const data = req.body
     const user = await userService.loginUser(data.email, data.password)
-    if (user instanceof String){
+
+
+    function isIError(obj: any): obj is IError {
+        return obj && obj.status === 'error' && typeof obj.message === 'string';
+    }
+    if (isIError(user)){
         res.sendStatus(401)
     } else {
-        const token = sign(user, SECRET_KEY, {expiresIn:'1h'})
+        const token = sign(user.data, SECRET_KEY, {expiresIn:'1h'})
         res.cookie('token', token)
         res.sendStatus(200)
     }
@@ -31,7 +36,7 @@ async function authRegistration(req: Request, res: Response){
     if (user.status == 'error'){
         res.sendStatus(401)
     } else {
-        const token = sign(user, SECRET_KEY, {expiresIn:'1h'})
+        const token = sign(user.data, SECRET_KEY, {expiresIn:'1h'})
         res.cookie('token', token)
         res.sendStatus(200)
     }
