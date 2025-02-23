@@ -1,0 +1,35 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../static/style.css">
+</head>
+<body>
+    <header>
+        <h1>Posts page</h1>
+        <div class="header_nav">
+            <a href="/">Home page</a>
+            <a href="/date/">Date page</a>
+            <a href="/post/all">Posts page</a>
+            <a href="/user/">User page</a>
+            <a href="/login/">Login page</a>
+            <a href="/registration/">Registration page</a>
+        </div>
+    </header>
+
+    <main>
+        <% comments.forEach((comment, index) => { %>
+            <div class="comment">
+                <h2><%= comment.title %></a></h2>
+                <h4><%= comment.text %></h4>
+            </div>
+        <% }) %>
+
+    </main>
+
+    <footer>
+        <p>This is comments page.</p>
+    </footer>
+</body>
+</html>

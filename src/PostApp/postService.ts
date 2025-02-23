@@ -46,4 +46,17 @@ async function deletePost(id: number){
     await postRepository.deletePost(id)
 }
 
-export { getAllPosts, getPostById, createPost, deletePost }
+
+async function createOneComment(data: Prisma.CommentUncheckedCreateInput){
+    const comment = await postRepository.createOneComment(data)
+    console.log(comment)
+}
+
+async function findPostWithComments(id: number){
+    const post = await postRepository.findPostWithComments(id)
+    
+    return post
+
+}
+
+export { getAllPosts, getPostById, createPost, deletePost, createOneComment, findPostWithComments}

@@ -8,9 +8,11 @@ import express, { Express, Request, Response } from 'express'
 import { join } from 'path'
 import moment from 'moment'
 import { router } from './PostApp/postRouter'
+import commentRouter from "./CommentApp/commentRouter"
 import userRouter from './UserApp/userRouter'
 import cookieParser from 'cookie-parser'
-
+import postRouter from "./PostApp/postRouterApi"
+import cors from "cors"
 
 const app: Express = express()
 
@@ -21,8 +23,16 @@ app.set("views", join(__dirname, 'templates'))
 app.use('/static/', express.static(join(__dirname, 'static')))
 app.use(express.json())
 app.use(cookieParser())
+
+app.use(cors({
+    origin: ['http://localhost:3000']
+}))
+
+app.use('/', commentRouter)
 app.use('/post/', router)
 app.use('/', userRouter)
+app.use('/api/post/', postRouter)
+
 
 function getDate(){
     console.log(moment().format("YYYY/MM/DD hh:mm:ss"))

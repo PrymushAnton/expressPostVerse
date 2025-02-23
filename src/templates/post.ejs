@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Post</title>
+    <script src="/static/post.js" defer></script>
     <link rel="stylesheet" href="/static/style.css">
-    
 </head>
 <body>
     <header>
@@ -27,7 +27,17 @@
             <p><%= post.text %></p>
         </div>
         
-        <button id="writeComment">Write a comment</button>
+
+        <!-- <form id="createPostForm"> -->
+            <label>Title: <input type="text" name="title" id="title"></label>
+            <label>Text: <input type="text" name="text" id="text"></label>
+        
+            <button id="writeComment">Write a comment</button>
+        <!-- </form> -->
+
+        <div>
+            <h1 id="response"></h1>
+        </div>
     </main>
 
     <footer>

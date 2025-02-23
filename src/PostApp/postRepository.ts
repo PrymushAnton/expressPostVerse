@@ -1,6 +1,7 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import client from '../client/prismaClient'
 import { PrismaClientKnownRequestError, PrismaClientUnknownRequestError } from "@prisma/client/runtime/library";
+import { create } from "ts-node";
 
 async function getAllPosts(){
     try{
@@ -60,30 +61,34 @@ async function getAllPosts(){
 // }
 
 
-// async function createOneComment(id:number){
-//     try{
-//         const comment = await client.comment.create({
-//             data: {
-//                 title: "Working at a factory is better!",
-//                 text: "Lorem ipsum dolor sit amet, consectetur adipiscing",
-//                 postId: id
-//             }
-//         })
-//     } catch(err){
-//         if (err instanceof PrismaClientKnownRequestError){
-//             if (err.code == 'P2002'){
-//                 console.log(err.message)
-//                 throw err
-//             } else if (err.code == 'P2015'){
-//                 console.log(err.message)
-//                 throw err
-//             } else if (err.code == 'P2019'){
-//                 console.log(err.message)
-//                 throw err
-//             } 
-//         }
-//     }
-// }
+async function createOneComment(data: Prisma.CommentUncheckedCreateInput){
+    try{
+        console.log("rep datatatatatata",data)
+        const comment = await client.comment.create({
+            data: {
+                title: data.title,
+                text: data.text,
+                postId: +(data.postId),
+                userId: data.userId
+            }
+        })
+        return comment
+    } catch(err){
+        console.log(err)
+        if (err instanceof PrismaClientKnownRequestError){
+            if (err.code == 'P2002'){
+                console.log(err.message)
+                throw err
+            } else if (err.code == 'P2015'){
+                console.log(err.message)
+                throw err
+            } else if (err.code == 'P2019'){
+                console.log(err.message)
+                throw err
+            } 
+        }
+    }
+}
 
 // async function createManyComments(id:number){
 //     try{
@@ -223,6 +228,38 @@ async function printInfoAboutPostComments(id:number){
     }
 }
 
+async function findPostWithComments(id:number){
+    try{
+
+        const post: any = await client.post.findUnique({
+            where: {
+                id: id
+            }
+        })
+    
+        const comments: any = await client.comment.findMany({
+            where: {
+                postId: post.id
+            }
+        })
+        return {...post, comments: comments}
+
+    } catch(err){
+        if (err instanceof PrismaClientKnownRequestError){
+            if (err.code == 'P2002'){
+                console.log(err.message)
+                throw err
+            } else if (err.code == 'P2015'){
+                console.log(err.message)
+                throw err
+            } else if (err.code == 'P2019'){
+                console.log(err.message)
+                throw err
+            } 
+        }
+    }
+}
+
 async function updateComment(id:number){
     try{
         const comment = await client.comment.update({
@@ -298,6 +335,9 @@ async function findPost(id:number){
         }
     }
 }
+
+
+
 
 async function findManyPosts(author:string){
     try{
@@ -416,6 +456,8 @@ const postRepository = {
     getAllPosts:getAllPosts,
     getPostById:getPostById,
     createOnePost:createOnePost,
-    deletePost: deletePost
+    deletePost: deletePost,
+    createOneComment: createOneComment,
+    findPostWithComments: findPostWithComments
 }
 export default postRepository

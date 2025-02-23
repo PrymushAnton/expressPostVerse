@@ -30,8 +30,14 @@
         <% }) %>
 
         
-        <button id="create_post">Create post</button>
-        <button id="delete_post">Delete post</button>
+        <form id="createPostForm">
+            <label>Name: <input type="text" name="name" id="name"></label>
+            <label>Author: <input type="text" name="author" id="author"></label>
+            <label>Text: <input type="text" name="text" id="text"></label>
+
+            <button id="create_post">Create post</button>
+        </form>
+        <!-- <button id="delete_post">Delete post</button> -->
 
         
         <div id="response_div">
