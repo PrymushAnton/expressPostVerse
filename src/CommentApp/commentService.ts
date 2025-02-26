@@ -1,15 +1,6 @@
 import commentRepository from "./commentRepository"
 import {Comment} from "./types"
-
-interface ISuccess<T>{
-    status: "success",
-    data: T
-}
-
-interface IError{
-    status: "error",
-    message: string
-}
+import { ISuccess, IError } from "../types/types"
 
 
 async function getAllCommentsByPostId(postId:number): Promise<ISuccess<Comment[]> | IError>{

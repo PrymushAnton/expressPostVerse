@@ -1,7 +1,8 @@
 import { Request, Response } from 'express'
-import userService, {IError, ISuccess} from './userService'
+import userService from './userService'
 import { SECRET_KEY } from '../config/token'
 import { sign } from 'jsonwebtoken'
+import { IError, ISuccess } from '../types/types'
 
 
 function renderLoginPage(req: Request, res: Response){
@@ -10,19 +11,15 @@ function renderLoginPage(req: Request, res: Response){
 
 async function loginUser(req: Request, res: Response){
     const data = req.body
-    const user = await userService.loginUser(data.email, data.password)
+    const result = await userService.loginUser(data.email, data.password)
 
+    if (result.status === "error") {
+        res.send(result.message)
+        return
+    }
 
-    function isIError(obj: any): obj is IError {
-        return obj && obj.status === 'error' && typeof obj.message === 'string';
-    }
-    if (isIError(user)){
-        res.sendStatus(401)
-    } else {
-        const token = sign(user.data, SECRET_KEY, {expiresIn:'1h'})
-        res.cookie('token', token)
-        res.sendStatus(200)
-    }
+    res.cookie("token", result.data)
+    res.sendStatus(200)
 }
 
 
@@ -32,14 +29,15 @@ function renderRegistrationPage(req: Request, res: Response){
 
 async function authRegistration(req: Request, res: Response){
     const data = req.body
-    const user = await userService.createUser(data)
-    if (user.status == 'error'){
-        res.sendStatus(401)
-    } else {
-        const token = sign(user.data, SECRET_KEY, {expiresIn:'1h'})
-        res.cookie('token', token)
-        res.sendStatus(200)
+    const result = await userService.createUser(data)
+    if (result.status == 'error'){
+        res.send(result.message)
+        return
     }
+
+    res.cookie('token', result.data)
+    res.sendStatus(200)
+    
 }
 
 const userController = {

@@ -1,53 +1,56 @@
 import { Prisma } from '@prisma/client'
 import userRepository from "./userRepository"
-import * as bcrypt from 'bcrypt';
-
-export interface ISuccess{
-    status: 'success',
-    data: IUser
-}
-
-export interface IError{
-    status: 'error',
-    message: string
-}
-
-export interface IUser{
-    id: number,
-    username: string,
-    email: string,
-    password: string,
-    role: string
-}
+import { IError, ISuccess } from '../types/types';
+import { CreateUser } from './types';
+import { hash, compare } from "bcryptjs"
+import { sign } from 'jsonwebtoken';
+import { SECRET_KEY } from '../config/token';
 
 // const ComparePassword = async (hash: string, password: string): Promise<boolean> => {
 //     const isMatch = await bcrypt.compare(password, hash);
 //     return isMatch;
 // }
 
-async function loginUser(email: string, password: string): Promise< IError | ISuccess > {
+async function loginUser(email: string, password: string): Promise< IError | ISuccess<string> > {
     const user = await userRepository.findUserByEmail(email=email)
-    if (user == null || user == undefined){
-        return {status: "error", message: "User does not exist"}
-    } else {
-        if (password == user.password){
-            console.log("Welcome")
 
-            return {status: 'success', data: user}
-        }
-        return {status: "error", message: "password does not match"}
+    if (!user) {
+        return {status: "error", message: "User does not exists"}
     }
+
+    const isPasswordMatched = await compare(password, user.password)
+
+    if (!isPasswordMatched) {
+        return {status: "error", message: "Wrong password"}
+    }
+
+    const token = sign({id: user.id}, SECRET_KEY, {expiresIn: "1d"})
+    return {status: 'success', data: token}
 }
 
-async function createUser(data: {username:string, email:string, password:string}): Promise< IError | ISuccess > {
+async function createUser(data: CreateUser): Promise< IError | ISuccess<string> > {
     const user = await userRepository.findUserByEmail(data.email)
-    if (user == null || user == undefined){
-        const full_data = {...data, role:"admin"}
-        const created_user: any = await userRepository.createUser(full_data)
-        return {status: 'success', data: created_user}
-    } else {
-        return {status: 'error', message: "User exists"}
+
+    if (user) {
+        return {status: "error", message: "User exists"}
     }
+
+    const hashedPassword = await hash(data.password, 10)
+
+    const userData = {
+        ...data,
+        password: hashedPassword
+    }
+
+    const newUser = await userRepository.createUser(userData)
+
+    if (!newUser) {
+        return {status: "error", message: "Error when creating a user"}
+    }
+
+    const token = sign({id: newUser.id}, SECRET_KEY, {expiresIn: "1d"})
+
+    return {status: "success", data: token}
 }
 
 const userService = {

@@ -4,7 +4,7 @@
 // та розбити цей код на окремі блоки для легшої роботи розробника з цим кодом.
 
 import { Router } from 'express'
-import { createOneComment, getAllPosts, getPostById, createPost, deletePost } from './postController'
+import postController from './postController'
 import { authMiddleware } from '../middlewares/authMiddleware'
 import { userRoleMiddleware } from '../middlewares/userRoleMiddleware'
 
@@ -12,17 +12,17 @@ import { userRoleMiddleware } from '../middlewares/userRoleMiddleware'
 const router = Router()
 // const postController = require('../controllers/postController')
 
-router.get("/all", getAllPosts)
+router.get("/all", postController.getAllPosts)
 // authMiddleware, userRoleMiddleware,
-router.post('/create', authMiddleware, userRoleMiddleware, createPost)
-router.post('/delete', authMiddleware, userRoleMiddleware, deletePost)
+router.post('/create', authMiddleware, userRoleMiddleware, postController.createPost)
+router.post('/delete', authMiddleware, userRoleMiddleware, postController.deletePost)
 
-router.get("/:id", getPostById)
-
-
-router.post('/:postId/create/comment', createOneComment)
+router.get("/:id", postController.getPostById)
 
 
+router.post('/:postId/create/comment', postController.createOneComment)
 
 
-export { router }
+
+
+export default router

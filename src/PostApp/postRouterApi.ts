@@ -4,10 +4,10 @@
 import { Router } from "express";
 import postControllerApi from './postControllerApi'
 
-const postRouter = Router()
+const router = Router()
 
-postRouter.get('/all', postControllerApi.getAllPostsApi)
-postRouter.get('/:id', postControllerApi.findPostWithComments)
+router.get('/all', postControllerApi.getAllPostsApi)
+router.get('/:id', postControllerApi.findPostWithComments)
 
 
-export default postRouter
+export default router

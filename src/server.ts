@@ -7,11 +7,11 @@
 import express, { Express, Request, Response } from 'express'
 import { join } from 'path'
 import moment from 'moment'
-import { router } from './PostApp/postRouter'
+import postRouter from './PostApp/postRouter'
 import commentRouter from "./CommentApp/commentRouter"
 import userRouter from './UserApp/userRouter'
 import cookieParser from 'cookie-parser'
-import postRouter from "./PostApp/postRouterApi"
+import postRouterApi from "./PostApp/postRouterApi"
 import cors from "cors"
 
 const app: Express = express()
@@ -29,9 +29,9 @@ app.use(cors({
 }))
 
 app.use('/', commentRouter)
-app.use('/post/', router)
+app.use('/post/', postRouter)
 app.use('/', userRouter)
-app.use('/api/post/', postRouter)
+app.use('/api/post/', postRouterApi)
 
 
 function getDate(){

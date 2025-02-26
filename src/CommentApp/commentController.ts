@@ -6,14 +6,15 @@ import commentService from "./commentService"
 
 
 async function getAllCommentsByPostId(req: Request, res: Response) {
-    const id: string = req.params.postId
+    const id = req.params.postId
     const result = await commentService.getAllCommentsByPostId(+id)
 
     if (result.status == "error"){
         res.send(result.message)
-    } else {
-        res.render("comments", {comments: result.data})
-    }
+        return
+    } 
+    res.render("comments", {comments: result.data})
+    
 
 }
 
@@ -23,9 +24,11 @@ async function getAllCommentsByUserId(req: Request, res: Response) {
 
     if (result.status == "error"){
         res.send(result.message)
-    } else {
-        res.render("comments", {comments: result.data})
+        return
     }
+
+    res.render("comments", {comments: result.data})
+    
 
 }
 

@@ -3,6 +3,8 @@ import client from '../client/prismaClient'
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import * as bcrypt from 'bcrypt';
 
+import { errors, IErrors } from "../config/errorCodes";
+import { CreateUser } from "./types";
 
 // const HashPassword = async (password: string): Promise<string> => {
 //     const salt = await bcrypt.genSalt();
@@ -23,46 +25,29 @@ async function findUserByEmail(email:string){
         return user
         
         
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
+    } catch(error){
+        if (error instanceof Prisma.PrismaClientKnownRequestError){
+            if (error.code in Object.keys(errors)){
+                const errorKey: keyof IErrors = error.code
+                console.log(errors[errorKey])
+            }
         }
     }
 }
 
 
-async function createUser(data: Prisma.UserCreateInput){
+async function createUser(data: CreateUser){
     try{
         const user = await client.user.create({
-            data: {
-                username: data.username,
-                email: data.email,
-                password: data.password,
-                role: data.role
-            }
+            data: data
         })
         return user
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
+    } catch(error){
+        if (error instanceof Prisma.PrismaClientKnownRequestError){
+            if (error.code in Object.keys(errors)){
+                const errorKey: keyof IErrors = error.code
+                console.log(errors[errorKey])
+            }
         }
     }
 }

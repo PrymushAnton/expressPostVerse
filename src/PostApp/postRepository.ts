@@ -1,389 +1,77 @@
 import { Prisma, PrismaClient } from "@prisma/client";
 import client from '../client/prismaClient'
 import { PrismaClientKnownRequestError, PrismaClientUnknownRequestError } from "@prisma/client/runtime/library";
-import { create } from "ts-node";
+import { errors, IErrors } from '../config/errorCodes'
+import { CreateComment, CreatePost } from "./types"
 
 async function getAllPosts(){
     try{
-        const posts = await client.post.findMany({})
+        const posts = await client.post.findMany({
+            include:{
+                Comments: true,
+                User: true
+            }
+        })
         return posts
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
-        }
-    }
-}
-
-
-
-
-
-// async function createManyPosts(){
-//     try{
-//         const posts = await client.post.createMany({
-//             data: [
-//                 {
-//                     name: "Posttt",
-//                     author: "Somebody",
-//                     text: "Somebodys post"
-//                 },
-//                 {
-//                     name: "PPPost",
-//                     author: "Bodysome",
-//                     text: "Bodysomes post"
-//                 }
-//             ]
-//         })
-//     } catch(err){
-//         if (err instanceof PrismaClientKnownRequestError){
-//             if (err.code == 'P2002'){
-//                 console.log(err.message)
-//                 throw err
-//             } else if (err.code == 'P2015'){
-//                 console.log(err.message)
-//                 throw err
-//             } else if (err.code == 'P2019'){
-//                 console.log(err.message)
-//                 throw err
-//             } 
-//         }
-//     }
-    
-// }
-
-
-async function createOneComment(data: Prisma.CommentUncheckedCreateInput){
-    try{
-        console.log("rep datatatatatata",data)
-        const comment = await client.comment.create({
-            data: {
-                title: data.title,
-                text: data.text,
-                postId: +(data.postId),
-                userId: data.userId
+    } catch(error){
+        if (error instanceof Prisma.PrismaClientKnownRequestError){
+            if (error.code in Object.keys(errors)){
+                const errorKey: keyof IErrors = error.code
+                console.log(errors[errorKey])
             }
-        })
-        return comment
-    } catch(err){
-        console.log(err)
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
         }
     }
 }
 
-// async function createManyComments(id:number){
+
+
+// async function findPostWithComments(id:number){
 //     try{
-//         const comment = await client.comment.createMany({
-//             data: [
-//                 {
-//                     title: "You have an error in code!",
-//                     text: "Lorem ipsum dolor sit amet, consectetur adipiscing",
-//                     postId: id
-//                 },
-//                 {
-//                     title: "Your tutorials is the best!",
-//                     text: "Lorem ipsum dolor sit amet, consectetur adipiscing",
-//                     postId: id
-//                 }
-//             ]
+
+//         const post = await client.post.findUnique({
+//             where: {
+//                 id: id
+//             },
+//             include:{
+//                 Comments: true,
+//                 User: true
+//             }
 //         })
-//     } catch(err){
-//         if (err instanceof PrismaClientKnownRequestError){
-//             if (err.code == 'P2002'){
-//                 console.log(err.message)
-//                 throw err
-//             } else if (err.code == 'P2015'){
-//                 console.log(err.message)
-//                 throw err
-//             } else if (err.code == 'P2019'){
-//                 console.log(err.message)
-//                 throw err
-//             } 
+    
+//         return post
+
+//     } catch(error){
+//         if (error instanceof Prisma.PrismaClientKnownRequestError){
+//             if (error.code in Object.keys(errors)){
+//                 const errorKey: keyof IErrors = error.code
+//                 console.log(errors[errorKey])
+//             }
 //         }
 //     }
 // }
 
 
-async function deleteComment(id:number){
-    try{
-        const comment = await client.comment.delete({
-            where: {
-                id: id
-            }
-        })
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
-        }
-    }
-}
-
-async function findCommentById(id:number){
-    try{
-        const comment = await client.comment.findUnique({
-            where: {
-                id: id
-            }
-        })
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
-        }
-    }
-    
-}
-
-async function printInfoAboutPost(id:number){
-    try{
-        const comment: any = await client.comment.findUnique({
-            where: {
-                id: id
-            }
-        })
-        const post = await client.post.findUnique({
-            where: {
-                id: comment.postId
-            }
-        })
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
-        }
-    }
-    
-}
-
-async function printInfoAboutPostComments(id:number){
-    try{
-        const post: any = await client.post.findUnique({
-            where: {
-                id: id
-            }
-        })
-    
-        const comments: any = await client.comment.findMany({
-            where: {
-                postId: post.id
-            }
-        })
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
-        }
-    }
-}
-
-async function findPostWithComments(id:number){
-    try{
-
-        const post: any = await client.post.findUnique({
-            where: {
-                id: id
-            }
-        })
-    
-        const comments: any = await client.comment.findMany({
-            where: {
-                postId: post.id
-            }
-        })
-        return {...post, comments: comments}
-
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
-        }
-    }
-}
-
-async function updateComment(id:number){
-    try{
-        const comment = await client.comment.update({
-            where: {
-                id: id
-            },
-            data: {
-                text: "COMMENT"
-            }
-        })
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
-        }
-    }
-}
 
 
-async function updatePost(id:number){
-    try{
-        const post = await client.post.update({
-            where: {
-                id: id
-            },
-            data: {
-                text: "NOTTTTT POST"
-            }
-        })
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
-        }
-    }
-}
-
-async function findPost(id:number){
-    try{
-        const post = await client.post.findUnique({
-            where: {
-                id: id
-            }
-        })
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
-        }
-    }
-}
-
-
-
-
-async function findManyPosts(author:string){
-    try{
-        const post = await client.post.findMany({
-            where: {
-                author: author
-            }
-        })
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
-        }
-    }
-}
 
 async function deletePost(id: number){
     try{
-        console.log(id)
         const post = await client.post.delete({
             where: {
                 id: id
+            },
+            include:{
+                Comments: true,
+                User: true
             }
         })
-        console.log(post)
-
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
+        return post
+    } catch(error){
+        if (error instanceof Prisma.PrismaClientKnownRequestError){
+            if (error.code in Object.keys(errors)){
+                const errorKey: keyof IErrors = error.code
+                console.log(errors[errorKey])
+            }
         }
     }
 }
@@ -394,56 +82,59 @@ async function getPostById(id:number){
         const post = await client.post.findUnique({
             where:{
                 id:id
+            },
+            include:{
+                Comments: true,
+                User: true
             }
         })
         return post
-    } catch(err){
-        if (err instanceof PrismaClientKnownRequestError){
-            if (err.code == 'P2002'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2015'){
-                console.log(err.message)
-                throw err
-            } else if (err.code == 'P2019'){
-                console.log(err.message)
-                throw err
-            } 
+    } catch(error){
+        if (error instanceof Prisma.PrismaClientKnownRequestError){
+            if (error.code in Object.keys(errors)){
+                const errorKey: keyof IErrors = error.code
+                console.log(errors[errorKey])
+            }
         }
     }
 }
 
-interface IData{
-    name: string,
-    author: string,
-    text: string
-}
-async function createOnePost(data:IData){
+async function createOneComment(data: CreateComment){
     try{
-        console.log(data)
-        const post = await client.post.create({
-            data: {
-                ...data,
-                userId: 1
+        const comment = await client.comment.create({
+            data: data,
+            include: {
+                User: true,
+                Post: true
             }
         })
-        console.log(post)
-    } catch(err){
-        console.log("Error")
+        return comment
+    } catch(error){
+        if (error instanceof Prisma.PrismaClientKnownRequestError){
+            if (error.code in Object.keys(errors)){
+                const errorKey: keyof IErrors = error.code
+                console.log(errors[errorKey])
+            }
+        }
+    }
+}
 
-        if (err instanceof PrismaClientUnknownRequestError){
-            console.log(err.message)
-
-            // if (err.code == 'P2002'){
-            //     console.log(err.message)
-            //     throw err
-            // } else if (err.code == 'P2015'){
-            //     console.log(err.message)
-            //     throw err
-            // } else if (err.code == 'P2019'){
-            //     console.log(err.message)
-            //     throw err
-            // } 
+async function createOnePost(data:CreatePost){
+    try{
+        const post = await client.post.create({
+            data: data,
+            include: {
+                Comments: true,
+                User: true
+            }
+        })
+        return post
+    } catch(error){
+        if (error instanceof Prisma.PrismaClientKnownRequestError){
+            if (error.code in Object.keys(errors)){
+                const errorKey: keyof IErrors = error.code
+                console.log(errors[errorKey])
+            }
         }
     }
     
@@ -456,8 +147,8 @@ const postRepository = {
     getAllPosts:getAllPosts,
     getPostById:getPostById,
     createOnePost:createOnePost,
-    deletePost: deletePost,
     createOneComment: createOneComment,
-    findPostWithComments: findPostWithComments
+    deletePost: deletePost,
+    // findPostWithComments: findPostWithComments
 }
 export default postRepository

@@ -1,9 +1,8 @@
 model Post {
   id       Int       @id @default(autoincrement())
-  name     String
-  author   String
+  title    String
   text     String
-  comments Comment[]
+  Comments Comment[]
 
   User   User @relation(fields: [userId], references: [id])
   userId Int
