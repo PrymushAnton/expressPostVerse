@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client";
-
-const prisma = new PrismaClient()
+import { Prisma } from "@prisma/client"
+import client from "../src/client/prismaClient"
+import { errors, IErrors } from "../src/config/errorCodes"
 
 // async function createOnePost(){
 //     const post = await prisma.post.create({
@@ -182,29 +182,101 @@ const prisma = new PrismaClient()
 //     await updateComment()
 // }
 
-
-
-async function createManyPosts(){
-    const posts = await prisma.post.createMany({
-        data: [
-            {
-                title: "Posttt",
-                userId: 1,
-                text: "Somebodys post"
-            },
-            {
-                title: "PPPost",
-                userId: 1,
-                text: "Bodysomes post"
+async function createOneUser() {
+    try {
+        const user = await client.user.create({
+            data: {
+                username: "Serj",
+                email: "serj@gmail.com",
+                password: "12345678",
+                role: "admin"
             }
-    ]
-    })
-    console.log(posts)
+
+        })
+        console.log(user)
+
+    } catch(error){
+        if (error instanceof Prisma.PrismaClientKnownRequestError){
+            if (error.code in Object.keys(errors)){
+                const errorKey: keyof IErrors = error.code
+                console.log(errors[errorKey])
+            }
+        }
+    }
 }
 
-createManyPosts().then(() => {
-    prisma.$disconnect()
-}).catch((err) => {
-    console.log(err)
-    prisma.$disconnect()
+async function createManyTags() {
+    try {
+        const tags = await client.tag.createMany({
+            data: [
+                {
+                    name: "Django"
+                },
+                {
+                    name: "React"
+                },
+                {
+                    name: "Express"
+                }
+            ]
+        })
+        console.log(tags)
+
+    } catch(error){
+        if (error instanceof Prisma.PrismaClientKnownRequestError){
+            if (error.code in Object.keys(errors)){
+                const errorKey: keyof IErrors = error.code
+                console.log(errors[errorKey])
+            }
+        }
+    }
+}
+
+async function createManyPosts(){
+    try {
+        const posts = await client.post.createMany({
+            data: [
+                {
+                    title: "Creating server with Python",
+                    text: "In this tutorial I will show you how to create server with Python using Django framework.",
+                    tagId: 1,
+                    userId: 1
+                },
+                {
+                    title: "Creating server with TypeScript",
+                    text: "In this tutorial I will show you how to create server with TypeScript using Express framework.",
+                    tagId: 3,
+                    userId: 1
+                },
+                {
+                    title: "Creating front-end app with React",
+                    text: "In this tutorial I will show you how to create front-end app with TypeScript using React library.",
+                    tagId: 2,
+                    userId: 1
+                }
+        ]
+        })
+        console.log(posts)
+    } catch(error){
+        console.log(error)
+        if (error instanceof Prisma.PrismaClientKnownRequestError){
+            if (error.code in Object.keys(errors)){
+                const errorKey: keyof IErrors = error.code
+                console.log(errors[errorKey])
+            }
+        }
+    }
+}
+
+async function seed() {
+    await createOneUser()
+    await createManyTags()
+    await createManyPosts()
+}
+
+seed().then(() => {
+    client.$disconnect()
+}).catch((error) => {
+    console.log(error)
+    client.$disconnect()
 })

@@ -9,7 +9,8 @@ async function getAllPosts(){
         const posts = await client.post.findMany({
             include:{
                 Comments: true,
-                User: true
+                User: true,
+                Tag: true
             }
         })
         return posts
@@ -62,7 +63,8 @@ async function deletePost(id: number){
             },
             include:{
                 Comments: true,
-                User: true
+                User: true,
+                Tag: true
             }
         })
         return post
@@ -85,7 +87,8 @@ async function getPostById(id:number){
             },
             include:{
                 Comments: true,
-                User: true
+                User: true,
+                Tag: true
             }
         })
         return post
@@ -125,7 +128,8 @@ async function createOnePost(data:CreatePost){
             data: data,
             include: {
                 Comments: true,
-                User: true
+                User: true,
+                Tag: true
             }
         })
         return post
