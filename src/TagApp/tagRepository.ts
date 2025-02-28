@@ -1,6 +1,7 @@
 import client from "../client/prismaClient";
 import {CreateTag} from "./types"
 import { errors, IErrors } from "../config/errorCodes";
+// не надо переносим в types
 import { Prisma } from "@prisma/client";
 
 async function createTag(data: CreateTag){

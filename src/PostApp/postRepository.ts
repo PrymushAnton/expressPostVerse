@@ -1,5 +1,7 @@
+// не используешь
 import { Prisma, PrismaClient } from "@prisma/client";
 import client from '../client/prismaClient'
+// не используешь
 import { PrismaClientKnownRequestError, PrismaClientUnknownRequestError } from "@prisma/client/runtime/library";
 import { errors, IErrors } from '../config/errorCodes'
 import { CreateComment, CreatePost } from "./types"

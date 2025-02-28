@@ -1,3 +1,4 @@
+// не используешь
 import { Prisma } from '@prisma/client'
 import userRepository from "./userRepository"
 import { IError, ISuccess } from '../types/types';
@@ -12,7 +13,7 @@ import { SECRET_KEY } from '../config/token';
 // }
 
 async function loginUser(email: string, password: string): Promise< IError | ISuccess<string> > {
-    const user = await userRepository.findUserByEmail(email=email)
+    const user = await userRepository.findUserByEmail(email)
 
     if (!user) {
         return {status: "error", message: "User does not exists"}

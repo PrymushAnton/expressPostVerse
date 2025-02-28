@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import userService from './userService'
+// не используешь
 import { SECRET_KEY } from '../config/token'
 import { sign } from 'jsonwebtoken'
 

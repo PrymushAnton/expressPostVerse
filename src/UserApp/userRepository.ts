@@ -1,5 +1,7 @@
+// не используешь
 import { Prisma, PrismaClient } from "@prisma/client";
 import client from '../client/prismaClient'
+// не используешь
 import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import * as bcrypt from 'bcrypt';
 
@@ -26,6 +28,7 @@ async function findUserByEmail(email:string){
         
         
     } catch(error){
+        // вынести в types
         if (error instanceof Prisma.PrismaClientKnownRequestError){
             if (error.code in Object.keys(errors)){
                 const errorKey: keyof IErrors = error.code

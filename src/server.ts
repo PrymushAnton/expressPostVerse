@@ -19,9 +19,12 @@ const app: Express = express()
 
 const PORT = 8000
 const HOST = 'localhost'
+// тут отделить бы
 app.set("view engine", "ejs")
 app.set("views", join(__dirname, 'templates'))
+
 app.use('/static/', express.static(join(__dirname, 'static')))
+
 app.use(express.json())
 app.use(cookieParser())
 
@@ -33,6 +36,7 @@ app.use('/', commentRouter)
 app.use('/post/', postRouter)
 app.use('/', userRouter)
 app.use('/api/post/', postRouterApi)
+// tagRouterApi
 app.use('/api/tag/', tagRouter)
 
 
@@ -50,12 +54,13 @@ app.get('/date/', (req: Request, res: Response) => {
     res.render('date')
     getDate()
 })
-
+// не нужно здесь
 app.get('/user/', (req: Request, res: Response) => {
     res.render("user")
 })
 
 
 app.listen(PORT, HOST, () =>{
+    // не используешь PORT и HOST
     console.log("http://localhost:8000")
 })

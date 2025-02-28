@@ -1,4 +1,5 @@
 // Сервіси - це функції, які виконують основну логіку функцій відображення
+// не используешь
 import { Prisma } from '@prisma/client'
 import postRepository from "./postRepository"
 import { CreateComment, CreatePost, PostWithComments } from './types'
