@@ -1,7 +1,7 @@
 import { Prisma } from '@prisma/client'
 import userRepository from "./userRepository"
 import { IError, ISuccess } from '../types/types';
-import { CreateUser } from './types';
+import { CreateUser, User } from './types';
 import { hash, compare } from "bcryptjs"
 import { sign } from 'jsonwebtoken';
 import { SECRET_KEY } from '../config/token';
@@ -12,7 +12,7 @@ import { SECRET_KEY } from '../config/token';
 // }
 
 async function loginUser(email: string, password: string): Promise< IError | ISuccess<string> > {
-    const user = await userRepository.findUserByEmail(email=email)
+    const user = await userRepository.findUserByEmail(email)
 
     if (!user) {
         return {status: "error", message: "User does not exists"}
@@ -53,9 +53,22 @@ async function createUser(data: CreateUser): Promise< IError | ISuccess<string> 
     return {status: "success", data: token}
 }
 
+async function getUserById(id: number): Promise<IError | ISuccess<User>>{
+    
+    const user = await userRepository.getUserById(id)
+
+    if (!user) {
+        return {status: "error", message: "There is no user with such id"}
+    }
+
+    return {status: "success", data: user}
+
+}
+
 const userService = {
     loginUser: loginUser,
-    createUser: createUser
+    createUser: createUser,
+    getUserById: getUserById
 }
 
 export default userService

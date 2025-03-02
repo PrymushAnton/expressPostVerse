@@ -11,4 +11,5 @@ userRouter.post('/login/', userController.loginUser)
 userRouter.get('/registration/', userController.renderRegistrationPage)
 userRouter.post('/registration/', userController.authRegistration)
 
+
 export default userRouter

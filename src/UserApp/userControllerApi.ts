@@ -17,11 +17,18 @@ async function registerUser(req: Request, res: Response){
     res.json(result)
 }
 
+async function getUserById(req: Request, res: Response){
+    const userId = res.locals.userId
+    const result = await userService.getUserById(+userId)
+    res.json(result)
+}
+
 
 
 const userController = {
     authUser: authUser,
     registerUser: registerUser,
+    getUserById: getUserById
 }
 
 export default userController
