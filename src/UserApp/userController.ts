@@ -1,9 +1,5 @@
 import { Request, Response } from 'express'
 import userService from './userService'
-// не используешь
-import { SECRET_KEY } from '../config/token'
-import { sign } from 'jsonwebtoken'
-import { IError, ISuccess } from '../types/types'
 
 
 function renderLoginPage(req: Request, res: Response){

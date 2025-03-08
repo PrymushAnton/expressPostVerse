@@ -1,21 +1,7 @@
-// не используешь
-import { Prisma, PrismaClient } from "@prisma/client";
 import client from '../client/prismaClient'
-// не используешь
-import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
-import * as bcrypt from 'bcrypt';
-
-import { errors, IErrors } from "../config/errorCodes";
+import { consoleLogError } from '../config/consoleLogError';
 import { CreateUser } from "./types";
-
-// const HashPassword = async (password: string): Promise<string> => {
-//     const salt = await bcrypt.genSalt();
-//     const hash = await bcrypt.hash(password, salt);
-//     return hash;
-// }
-
-
-
+import { Prisma } from '@prisma/client';
 
 async function findUserByEmail(email:string){
     try{
@@ -27,13 +13,9 @@ async function findUserByEmail(email:string){
         return user
         
         
-    } catch(error){
-        // вынести в types
+    } catch(error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError){
-            if (error.code in Object.keys(errors)){
-                const errorKey: keyof IErrors = error.code
-                console.log(errors[errorKey])
-            }
+            consoleLogError(error)
         }
     }
 }
@@ -47,14 +29,10 @@ async function createUser(data: CreateUser){
         return user
     } catch(error){
         if (error instanceof Prisma.PrismaClientKnownRequestError){
-            if (error.code in Object.keys(errors)){
-                const errorKey: keyof IErrors = error.code
-                console.log(errors[errorKey])
-            }
+            consoleLogError(error)
         }
     }
 }
-
 
 
 const userRepository = {

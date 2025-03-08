@@ -1,8 +1,5 @@
-// не используешь
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import client from '../client/prismaClient'
-// не используешь
-import { PrismaClientKnownRequestError, PrismaClientUnknownRequestError } from "@prisma/client/runtime/library";
 import { errors, IErrors } from '../config/errorCodes'
 import { CreateComment, CreatePost } from "./types"
 
@@ -25,36 +22,6 @@ async function getAllPosts(){
         }
     }
 }
-
-
-
-// async function findPostWithComments(id:number){
-//     try{
-
-//         const post = await client.post.findUnique({
-//             where: {
-//                 id: id
-//             },
-//             include:{
-//                 Comments: true,
-//                 User: true
-//             }
-//         })
-    
-//         return post
-
-//     } catch(error){
-//         if (error instanceof Prisma.PrismaClientKnownRequestError){
-//             if (error.code in Object.keys(errors)){
-//                 const errorKey: keyof IErrors = error.code
-//                 console.log(errors[errorKey])
-//             }
-//         }
-//     }
-// }
-
-
-
 
 
 async function deletePost(id: number){
@@ -155,6 +122,5 @@ const postRepository = {
     createOnePost:createOnePost,
     createOneComment: createOneComment,
     deletePost: deletePost,
-    // findPostWithComments: findPostWithComments
 }
 export default postRepository

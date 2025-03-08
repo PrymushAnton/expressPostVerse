@@ -1,11 +1,5 @@
 import { Request, Response } from "express"
-// не используем
-import { IError, ISuccess } from "../types/types"
 import tagService from "./tagService"
-// не используем
-import { CreateTag, TagWithPosts } from "./types"
-
-
 
 
 async function createTag(req: Request, res: Response) {

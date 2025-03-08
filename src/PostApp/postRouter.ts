@@ -8,12 +8,9 @@ import postController from './postController'
 import { authMiddleware } from '../middlewares/authMiddleware'
 import { userRoleMiddleware } from '../middlewares/userRoleMiddleware'
 
-// const express_app: Express = require('express')
 const router = Router()
-// const postController = require('../controllers/postController')
 
 router.get("/all", postController.getAllPosts)
-// authMiddleware, userRoleMiddleware,
 router.post('/create', authMiddleware, userRoleMiddleware, postController.createPost)
 router.post('/delete', authMiddleware, userRoleMiddleware, postController.deletePost)
 

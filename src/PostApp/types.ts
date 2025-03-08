@@ -1,8 +1,6 @@
 import { Prisma } from "@prisma/client";
 
-// название type не точное
-// либо уже Post :(
-export type PostWithComments = Prisma.PostGetPayload<{
+export type Post = Prisma.PostGetPayload<{
     include: {
         Comments: true,
         User: true,

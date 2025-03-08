@@ -1,8 +1,7 @@
 import client from "../client/prismaClient";
-import {CreateTag} from "./types"
-import { errors, IErrors } from "../config/errorCodes";
-// не надо переносим в types
+import { CreateTag } from "./types"
 import { Prisma } from "@prisma/client";
+import { consoleLogError } from "../config/consoleLogError";
 
 async function createTag(data: CreateTag){
 
@@ -16,10 +15,7 @@ async function createTag(data: CreateTag){
         return tag
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError){
-            if (error.code in Object.keys(errors)){
-                const errorKey: keyof IErrors = error.code
-                console.log(errors[errorKey])
-            }
+            consoleLogError(error)
         }
     }
 }
@@ -35,10 +31,7 @@ async function getAllTags() {
         return tags
     } catch (error) {
         if (error instanceof Prisma.PrismaClientKnownRequestError){
-            if (error.code in Object.keys(errors)){
-                const errorKey: keyof IErrors = error.code
-                console.log(errors[errorKey])
-            }
+            consoleLogError(error)
         }
     }
 }
