@@ -1,12 +1,11 @@
 // Сервіси - це функції, які виконують основну логіку функцій відображення
-import { Prisma } from '@prisma/client'
 import postRepository from "./postRepository"
-import { CreateComment, CreatePost, PostWithComments } from './types'
+import { CreateComment, CreatePost, Post } from './types'
 import { IError, ISuccess } from '../types/types'
 
 
 
-async function getAllPosts(): Promise <ISuccess<PostWithComments[]> | IError>{
+async function getAllPosts(): Promise <ISuccess<Post[]> | IError>{
     
     const posts = await postRepository.getAllPosts()
 
@@ -15,10 +14,10 @@ async function getAllPosts(): Promise <ISuccess<PostWithComments[]> | IError>{
     }
 
     return {status: "success", data: posts}
-
 }
 
-async function getPostById(id: number): Promise<ISuccess<PostWithComments> | IError>{
+
+async function getPostById(id: number): Promise<ISuccess<Post> | IError>{
     const post = await postRepository.getPostById(id)
 
     if (!post) {
@@ -28,7 +27,8 @@ async function getPostById(id: number): Promise<ISuccess<PostWithComments> | IEr
     return {status: "success", data: post}
 }
 
-async function createPost(data:CreatePost): Promise <ISuccess<PostWithComments> | IError>{
+
+async function createPost(data:CreatePost): Promise <ISuccess<Post> | IError>{
     const post = await postRepository.createOnePost(data)
 
     if (!post) {
@@ -38,7 +38,8 @@ async function createPost(data:CreatePost): Promise <ISuccess<PostWithComments> 
     return {status: "success", data:post}
 }
 
-async function deletePost(id: number): Promise <ISuccess<PostWithComments> | IError>{
+
+async function deletePost(id: number): Promise <ISuccess<Post> | IError>{
     const post = await postRepository.deletePost(id)
 
     if (!post) {
@@ -59,12 +60,6 @@ async function createOneComment(data: CreateComment): Promise<ISuccess<CreateCom
     return {status:"success", data:comment}
 }
 
-// async function findPostWithComments(id: number){
-//     const post = await postRepository.findPostWithComments(id)
-    
-//     return post
-
-// }
 
 const postService = {
     getAllPosts: getAllPosts, 
@@ -72,7 +67,6 @@ const postService = {
     createPost: createPost, 
     deletePost: deletePost, 
     createOneComment:createOneComment,
-    // findPostWithComments:findPostWithComments
 }
 
 

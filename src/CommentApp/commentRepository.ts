@@ -1,8 +1,7 @@
 import client from '../client/prismaClient'
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
+import { consoleLogError } from '../config/consoleLogError';
 
-import { PrismaClientKnownRequestError, PrismaClientUnknownRequestError } from "@prisma/client/runtime/library";
-import { errors, IErrors } from '../config/errorCodes';
 
 async function getAllCommentsByPostId(postId:number){
     try{
@@ -18,14 +17,10 @@ async function getAllCommentsByPostId(postId:number){
         return comments
     } catch(error){
         if (error instanceof Prisma.PrismaClientKnownRequestError){
-            if (error.code in Object.keys(errors)){
-                const errorKey: keyof IErrors = error.code
-                console.log(errors[errorKey])
-            }
+            consoleLogError(error)
         }
     }
 }
-
 
 
 async function getAllCommentsByUserId(userId:number){
@@ -42,10 +37,7 @@ async function getAllCommentsByUserId(userId:number){
         return comments
     } catch(error){
         if (error instanceof Prisma.PrismaClientKnownRequestError){
-            if (error.code in Object.keys(errors)){
-                const errorKey: keyof IErrors = error.code
-                console.log(errors[errorKey])
-            }
+            consoleLogError(error)
         }
     }
 }

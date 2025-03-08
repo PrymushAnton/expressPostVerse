@@ -1,6 +1,8 @@
 import {Router} from "express" 
 import userControllerApi from "./userControllerApi"
+
 import { authMiddlewareToken } from "../middlewares/authTokenMiddleware"
+
 
 const userApiRouter = Router()
 

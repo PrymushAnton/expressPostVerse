@@ -1,6 +1,6 @@
 import { Prisma } from "@prisma/client";
 
-export type PostWithComments = Prisma.PostGetPayload<{
+export type Post = Prisma.PostGetPayload<{
     include: {
         Comments: true,
         User: true,
@@ -9,5 +9,5 @@ export type PostWithComments = Prisma.PostGetPayload<{
 }>
 
 export type CreatePost = Prisma.PostUncheckedCreateInput
-
+// createComment в приложении постов?
 export type CreateComment = Prisma.CommentUncheckedCreateInput

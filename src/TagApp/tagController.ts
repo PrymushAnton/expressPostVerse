@@ -1,9 +1,5 @@
 import { Request, Response } from "express"
-import { IError, ISuccess } from "../types/types"
 import tagService from "./tagService"
-import { CreateTag, TagWithPosts } from "./types"
-
-
 
 
 async function createTag(req: Request, res: Response) {

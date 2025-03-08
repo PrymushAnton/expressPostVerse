@@ -13,6 +13,7 @@ async function getAllCommentsByPostId(postId:number): Promise<ISuccess<Comment[]
     return {status: "success", data:comments}
 }
 
+
 async function getAllCommentsByUserId(userId:number): Promise<ISuccess<Comment[]> | IError>{
     
     const comments = await commentRepository.getAllCommentsByUserId(userId)

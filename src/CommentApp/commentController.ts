@@ -1,8 +1,5 @@
-
-
 import { Request, Response } from "express";
 import commentService from "./commentService"
-
 
 
 async function getAllCommentsByPostId(req: Request, res: Response) {
