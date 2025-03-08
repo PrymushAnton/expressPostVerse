@@ -8,6 +8,7 @@ import postRouter from './PostApp/postRouter'
 import commentRouter from "./CommentApp/commentRouter"
 import userRouter from './UserApp/userRouter'
 import tagRouterApi from "./TagApp/tagRouter"
+import userRouterApi from './UserApp/userRouterApi'
 import postRouterApi from "./PostApp/postRouterApi"
 
 const app: Express = express()
@@ -30,6 +31,7 @@ app.use(cors({
 app.use('/', commentRouter)
 app.use('/post/', postRouter)
 app.use('/', userRouter)
+app.use("/api/user/", userRouterApi)
 app.use('/api/post/', postRouterApi)
 app.use('/api/tag/', tagRouterApi)
 

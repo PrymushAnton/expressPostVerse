@@ -34,10 +34,33 @@ async function createUser(data: CreateUser){
     }
 }
 
+async function getUserById(id:number){
+    try{
+        const user = await client.user.findUnique({
+            where:{
+                id: id
+            },
+            omit: {
+                password: true
+            }
+        })
+        return user
+        
+        
+    } catch(error){
+        if (error instanceof Prisma.PrismaClientKnownRequestError){
+            if (error.code in Object.keys(errors)){
+                const errorKey: keyof IErrors = error.code
+                console.log(errors[errorKey])
+            }
+        }
+    }
+}
 
 const userRepository = {
     findUserByEmail: findUserByEmail,
-    createUser: createUser
+    createUser: createUser,
+    getUserById: getUserById
 }
 
 export default userRepository

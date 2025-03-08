@@ -1,6 +1,6 @@
 import userRepository from "./userRepository"
 import { IError, ISuccess } from '../types/types';
-import { CreateUser } from './types';
+import { CreateUser, User } from './types';
 import { hash, compare } from "bcryptjs"
 import { sign } from 'jsonwebtoken';
 import { SECRET_KEY } from '../config/token';
@@ -50,9 +50,23 @@ async function createUser(data: CreateUser): Promise< IError | ISuccess<string> 
 }
 
 
+async function getUserById(id: number): Promise<IError | ISuccess<User>>{
+    
+    const user = await userRepository.getUserById(id)
+
+    if (!user) {
+        return {status: "error", message: "There is no user with such id"}
+    }
+
+    return {status: "success", data: user}
+
+}
+
+
 const userService = {
     loginUser: loginUser,
-    createUser: createUser
+    createUser: createUser,
+    getUserById: getUserById
 }
 
 export default userService
