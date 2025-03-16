@@ -17,7 +17,6 @@ export function authMiddlewareToken(req: Request, res: Response, next: NextFunct
         return
     }
     let token = header ? header.split("Bearer ").at(-1) : header
-    console.log(token)
 
     if (!token) {
         res.json({status: "error", message: "There is no token inside header"})
@@ -51,7 +50,6 @@ export function authMiddlewareToken(req: Request, res: Response, next: NextFunct
 
     function isTokenExpired(exp: number): boolean {
         const currentTime = Math.floor(Date.now() / 1000);
-        console.log(currentTime, exp)
         return currentTime >= exp;
     }
 

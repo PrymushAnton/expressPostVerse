@@ -1,5 +1,6 @@
 import client from '../client/prismaClient'
 import { consoleLogError } from '../config/consoleLogError';
+import { errors, IErrors } from '../config/errorCodes';
 import { CreateUser } from "./types";
 import { Prisma } from '@prisma/client';
 

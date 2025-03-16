@@ -3,8 +3,11 @@ import commentController from "./commentController";
 
 const commentRouter = Router()
 
-commentRouter.get("/commentPost/:postId", commentController.getAllCommentsByPostId)
-commentRouter.get("/commentUser/:userId", commentController.getAllCommentsByUserId)
+commentRouter.get("/post/:postId", commentController.getAllCommentsByPostId)
+commentRouter.post("/post/create", commentController.createCommentByPostId)
+
+
+commentRouter.get("/user/:userId", commentController.getAllCommentsByUserId)
 
 
 export default commentRouter

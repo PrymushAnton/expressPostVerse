@@ -6,13 +6,13 @@ async function getAllCommentsByPostId(req: Request, res: Response) {
     const id = req.params.postId
     const result = await commentService.getAllCommentsByPostId(+id)
 
-    if (result.status == "error"){
-        res.send(result.message)
-        return
-    } 
-    res.render("comments", {comments: result.data})
-    
+    res.json(result)
+}
 
+async function createCommentByPostId(req: Request, res: Response) {
+    const data = req.body
+    const result = await commentService.createCommentByPostId(data)
+    res.json(result)
 }
 
 async function getAllCommentsByUserId(req: Request, res: Response) {
@@ -32,7 +32,8 @@ async function getAllCommentsByUserId(req: Request, res: Response) {
 
 const commentController = {
     getAllCommentsByPostId: getAllCommentsByPostId,
-    getAllCommentsByUserId: getAllCommentsByUserId
+    getAllCommentsByUserId: getAllCommentsByUserId,
+    createCommentByPostId: createCommentByPostId
 }
 
 export default commentController

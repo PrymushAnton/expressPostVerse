@@ -8,7 +8,6 @@ const response = document.querySelector("#response")
 createCommentButton.addEventListener("click", ()=>{
     const path = window.location.pathname.split('/')
     const postId = path[path.length-1]
-    // console.log(postId)
     fetch(`/post/${postId}/create/comment`, {
         method: 'POST',
         body: JSON.stringify({

@@ -1,6 +1,7 @@
 import client from '../client/prismaClient'
 import { Prisma } from "@prisma/client";
 import { consoleLogError } from '../config/consoleLogError';
+import { CreateComment } from './types';
 
 
 async function getAllCommentsByPostId(postId:number){
@@ -9,12 +10,33 @@ async function getAllCommentsByPostId(postId:number){
             where: {
                 postId: postId
             },
+            omit:{
+                id: true,
+                postId: true,
+                userId: true
+            },
             include: {
-                Post: true,
-                User: true
+                User: {
+                    select: {
+                        username: true
+                    }
+                }
             }
         })
         return comments
+    } catch(error){
+        if (error instanceof Prisma.PrismaClientKnownRequestError){
+            consoleLogError(error)
+        }
+    }
+}
+
+async function createCommentByPostId(data: CreateComment){
+    try{
+        const comment = await client.comment.create({
+            data: data
+        })
+        return comment
     } catch(error){
         if (error instanceof Prisma.PrismaClientKnownRequestError){
             consoleLogError(error)
@@ -45,7 +67,8 @@ async function getAllCommentsByUserId(userId:number){
 
 const commentRepository = {
     getAllCommentsByPostId: getAllCommentsByPostId,
-    getAllCommentsByUserId: getAllCommentsByUserId
+    getAllCommentsByUserId: getAllCommentsByUserId,
+    createCommentByPostId: createCommentByPostId
 }
 
 export default commentRepository

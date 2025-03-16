@@ -28,7 +28,7 @@ app.use(cors({
     origin: ['http://localhost:3000']
 }))
 
-app.use('/', commentRouter)
+app.use('/api/comment/', commentRouter)
 app.use('/post/', postRouter)
 app.use('/', userRouter)
 app.use("/api/user/", userRouterApi)

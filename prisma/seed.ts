@@ -1,6 +1,8 @@
 import { Prisma } from "@prisma/client"
 import client from "../src/client/prismaClient"
 import { errors, IErrors } from "../src/config/errorCodes"
+import { title } from "process"
+import { text } from "stream/consumers"
 
 // async function createOnePost(){
 //     const post = await prisma.post.create({
@@ -193,7 +195,6 @@ async function createOneUser() {
             }
 
         })
-        console.log(user)
 
     } catch(error){
         if (error instanceof Prisma.PrismaClientKnownRequestError){
@@ -220,7 +221,6 @@ async function createManyTags() {
                 }
             ]
         })
-        console.log(tags)
 
     } catch(error){
         if (error instanceof Prisma.PrismaClientKnownRequestError){
@@ -256,7 +256,35 @@ async function createManyPosts(){
                 }
         ]
         })
-        console.log(posts)
+    } catch(error){
+        console.log(error)
+        if (error instanceof Prisma.PrismaClientKnownRequestError){
+            if (error.code in Object.keys(errors)){
+                const errorKey: keyof IErrors = error.code
+                console.log(errors[errorKey])
+            }
+        }
+    }
+}
+
+async function createManyComments(){
+    try {
+        const comments = await client.comment.createMany({
+            data: [
+                {
+                    title: "The best post!",
+                    text: "Really helped me to write my own project",
+                    userId: 1,
+                    postId: 3
+                },
+                {
+                    title: "Meh",
+                    text: "Typescriptik is better",
+                    userId: 1,
+                    postId: 1
+                }
+            ]
+        })
     } catch(error){
         console.log(error)
         if (error instanceof Prisma.PrismaClientKnownRequestError){
@@ -272,6 +300,7 @@ async function seed() {
     await createOneUser()
     await createManyTags()
     await createManyPosts()
+    await createManyComments()
 }
 
 seed().then(() => {
